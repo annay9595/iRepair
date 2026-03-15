@@ -1,45 +1,32 @@
 import './App.css'
-import { Header } from "./componentes/Header";
-import { ServiceCard } from './componentes/ServiceCard';
-import { NewServiceForm } from './componentes/NewServiceForm';
-import { useState } from 'react';
-import type { OS } from "./tipos/OS"
-
-
+import { BrowserRouter, Routes, Route } from "react-router";
+import { DashboardPage } from "./pages/DashboardPage";
+import { ServiceOrdersPage } from "./pages/ServiceOrdersPage";
+import { ClientsPage } from "./pages/ClientsPage";
+import { Layout } from "./componentes/Layout"
 function App() {
-
-  const [services, setServices] = useState<OS[]>([])
-  function addService(service: OS) {
-    setServices([...services, service])
-  }
-
-  function toggleStatus(index: number) {
-  const updatedServices = services.map((service, i) => {
-    if (i === index) {
-      return { ...service, status: !service.status }
-    }
-    return service
-  })
-
-  setServices(updatedServices)
-}
 
   return (
     <div className='bg-gray-900 flex flex-col justify-center min-h-screen '>
-      <Header />
+    <BrowserRouter>
 
-      <NewServiceForm addService={addService} />
-      {services.map((service, index) => (
-        <ServiceCard
-          key={index}
-          nome_cliente={service.nome_cliente}
-          aparelho={service.aparelho}
-          defeito={service.defeito}
-          status={service.status}
-          toggleStatus={() => toggleStatus(index)}
-        />
-      ))}
+      <Routes>
+
+        <Route element={<Layout />}>
+
+          <Route path="/" element={<DashboardPage />} />
+
+          <Route path="/clients" element={<ClientsPage />} />
+
+          <Route path="/service-orders" element={<ServiceOrdersPage />} />
+
+        </Route>
+
+      </Routes>
+
+    </BrowserRouter>
     </div>
+
   )
 }
 
